@@ -33,7 +33,9 @@ namespace University.Controllers
                 return NotFound();
             }
 
-            var student = await _context.Students
+            var student = await _context.Students.Include(s => s.Enrollments)
+                .ThenInclude(e => e.Course)
+                .AsNoTracking()
                 .SingleOrDefaultAsync(m => m.ID == id);
             if (student == null)
             {
@@ -54,13 +56,26 @@ namespace University.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,LastName,FirstMidName,EnrollmentDate")] Student student)
+        public async Task<IActionResult> Create([Bind("EnrollmentDate,FirstMidName,LastName")] Student student)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(student);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    if (ModelState.IsValid)
+                    {
+                        _context.Add(student);
+                        await _context.SaveChangesAsync();
+                        return RedirectToAction(nameof(Index));
+                    }
+                }
+                catch (DbUpdateException e)
+                {
+                    //Log the error (uncomment ex variable name and write a log.
+                    ModelState.AddModelError("", "Unable to save changes. " +
+                                                 "Try again, and if the problem persists " +
+                                                 "see your system administrator.");
+                }
             }
             return View(student);
         }
@@ -112,7 +127,7 @@ namespace University.Controllers
         }
 
         // GET: Students/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? id, bool? saveChangesError = false)
         {
             if (id == null)
             {
@@ -120,10 +135,17 @@ namespace University.Controllers
             }
 
             var student = await _context.Students
+                .AsNoTracking()
                 .SingleOrDefaultAsync(m => m.ID == id);
             if (student == null)
             {
                 return NotFound();
+            }
+
+            if (saveChangesError.GetValueOrDefault())
+            {
+                ViewData["ErrorMessage"] =
+                    "Delete failed";
             }
 
             return View(student);
@@ -134,10 +156,25 @@ namespace University.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var student = await _context.Students.SingleOrDefaultAsync(m => m.ID == id);
-            _context.Students.Remove(student);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            var student = await _context.Students.AsNoTracking()
+                .SingleOrDefaultAsync(m => m.ID == id);
+            if (student == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            try
+            {
+                _context.Students.Remove(student);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException)
+            {
+                return RedirectToAction(nameof(Delete), new { id = id, saveChangesError = true });
+                throw;
+            }
+            
         }
 
         private bool StudentExists(int id)
