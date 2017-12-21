@@ -3,9 +3,9 @@ C:\Users\user\source\repos\University\University\bin\Debug\netcoreapp2.0\Univers
 C:\Users\user\source\repos\University\University\bin\Debug\netcoreapp2.0\University.runtimeconfig.dev.json
 C:\Users\user\source\repos\University\University\bin\Debug\netcoreapp2.0\University.dll
 C:\Users\user\source\repos\University\University\bin\Debug\netcoreapp2.0\University.pdb
-C:\Users\user\source\repos\University\University\obj\Debug\netcoreapp2.0\University.csprojResolveAssemblyReference.cache
 C:\Users\user\source\repos\University\University\obj\Debug\netcoreapp2.0\University.csproj.CoreCompileInputs.cache
 C:\Users\user\source\repos\University\University\obj\Debug\netcoreapp2.0\University.AssemblyInfoInputs.cache
 C:\Users\user\source\repos\University\University\obj\Debug\netcoreapp2.0\University.AssemblyInfo.cs
 C:\Users\user\source\repos\University\University\obj\Debug\netcoreapp2.0\University.dll
 C:\Users\user\source\repos\University\University\obj\Debug\netcoreapp2.0\University.pdb
+C:\Users\user\source\repos\University\University\obj\Debug\netcoreapp2.0\University.csprojResolveAssemblyReference.cache

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace University.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class MaxLengthOnNames : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -29,8 +29,8 @@ namespace University.Migrations
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     EnrollmentDate = table.Column<DateTime>(nullable: false),
-                    FirstMidName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true)
+                    FirstName = table.Column<string>(maxLength: 50, nullable: true),
+                    LastName = table.Column<string>(maxLength: 50, nullable: true)
                 },
                 constraints: table =>
                 {

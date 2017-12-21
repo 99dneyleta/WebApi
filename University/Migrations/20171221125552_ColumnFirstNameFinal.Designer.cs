@@ -12,8 +12,8 @@ using University.Models;
 namespace University.Migrations
 {
     [DbContext(typeof(SchoolContext))]
-    [Migration("20171220130928_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20171221125552_ColumnFirstNameFinal")]
+    partial class ColumnFirstNameFinal
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -62,9 +62,12 @@ namespace University.Migrations
 
                     b.Property<DateTime>("EnrollmentDate");
 
-                    b.Property<string>("FirstMidName");
+                    b.Property<string>("FirstMidName")
+                        .HasColumnName("FirstName")
+                        .HasMaxLength(50);
 
-                    b.Property<string>("LastName");
+                    b.Property<string>("LastName")
+                        .HasMaxLength(50);
 
                     b.HasKey("ID");
 
